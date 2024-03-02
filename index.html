@@ -57,7 +57,7 @@ function setup() {
   }
   
   cnv = createCanvas(window.innerWidth, window.innerHeight);
-  rectButton = new betterButton(width/2, height / 2 + 50,140, 30, 40)
+  rectButton = new betterButton(width/2, height / 2,140, 30, 40)
 	
 	for (var i = 0; i < initialStarFactor; i++) {
         if (i % 2 === 0) {
@@ -93,7 +93,7 @@ function draw() {
   background(16,24,40);
   fill("white")
   textSize(20)
-  text(`Two-Headed Calf\nBy Laura Gilpin\n\nTomorrow when the farm boys find this\nfreak of nature, they will wrap his body\nin newspaper and carry him to the museum.\n\nBut tonight he is alive and in the north\nfield with his mother. It is a perfect\nsummer evening: the moon rising over\nthe orchard, the wind in the grass. And\nas he stares into the sky, there are\ntwice as many stars as usual.`, width / 2, height /2-180, width * 0.8, 400)
+  text(`Two-Headed Calf, By Laura Gilpin\n\nTomorrow when the farm boys find this\nfreak of nature, they will wrap his body\nin newspaper and carry him to the museum.\n\nBut tonight he is alive and in the north\nfield with his mother. It is a perfect\nsummer evening: the moon rising over\nthe orchard, the wind in the grass. And\nas he stares into the sky, there are\ntwice as many stars as usual.`, width / 2, height /2-180, width * 0.8, 400)
   
 	// let rectangle4Me = rect(300,300,300,300)
     // rectangle4Me.mousePressed(() => {console.log("hi")})
@@ -103,10 +103,12 @@ function draw() {
 		stars[i].draw();
 	}
   
-
+  push()
+  noStroke()
   rectButton.draw()
   fill(16, 24, 40)
   text(numHeads < 8 ? "More Stars" : "Reset", width/2, height / 2)
+  pop()
   
     if (numHeads === 1) image(cow1, width - 400, height - cow1.height)
   if (numHeads === 2) image(cow2, width - 400, height - cow2.height)
