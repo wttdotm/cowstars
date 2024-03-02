@@ -24,6 +24,7 @@ let cow3
 let cow4
 let initialStarFactor = 40
 let cnv
+let mouseIsPressed = false
 
 function preload() {
   // font = loadFont('assets/CodyStarFont.ttf');
@@ -71,10 +72,13 @@ function setup() {
 
   
   cnv.mouseClicked(() => {
-    console.log("in mosue cliucked", mouseX, mouseY)
-    console.log(rectButton.x - (rectButton.w / 2))
-    console.log(rectButton.x + (rectButton.w / 2))
+    // console.log("in mosue cliucked", mouseX, mouseY)
+    // console.log(rectButton.x - (rectButton.w / 2))
+    // console.log(rectButton.x + (rectButton.w / 2))
     if (mouseX > rectButton.x - (rectButton.w / 2) && mouseX < rectButton.x + (rectButton.w / 2) && mouseY > rectButton.y - (rectButton.h / 2) && mouseY < rectButton.y + (rectButton.h / 2)) rectButton.clicked()
+  })
+  cnv.mousePressed(() => {
+    if (mouseX > rectButton.x - (rectButton.w / 2) && mouseX < rectButton.x + (rectButton.w / 2) && mouseY > rectButton.y - (rectButton.h / 2) && mouseY < rectButton.y + (rectButton.h / 2)) mouseIsPressed = true
   })
   
   rectMode(CENTER)
@@ -141,23 +145,27 @@ function draw() {
   }
   
     if (numHeads > 8) {
-    numHeads = 1
-    stars = stars.slice(0,initialStarFactor-1)
-                     }
+      numHeads = 1
+      stars = stars.slice(0,initialStarFactor-1)
+    }
+    mouseIsPressed = false
 }
 
 
 
 class betterButton {
   constructor(x, y, w, h) {
-    this.x = x
+    this.x = x 
     this.y = y
-    this.w = w
-    this.h = h
+    this.w = mouseIsPressed ? w + 5 : w
+    this.h = mouseIsPressed ? h + 5 : h
   }
   
   draw() {
+    push()
+    fill(mouseIsPressed ? "lightgray" : "white")
     rect(this.x, this.y, this.w, this.h, 30)
+    pop()
   }
   
   
