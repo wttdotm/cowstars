@@ -116,11 +116,11 @@ function draw() {
   if (numHeads >= 4) image(cow4, width - 400, height - cow4.height)
   push()
   scale(-1,1)
-  if (numHeads === 5) image(cow1R, -width / 3, height - cow1R.height)
+  if (numHeads === 5) image(cow1R, vertical ? -width / 2 : -width / 2.4, height - cow1R.height)
 
-  if (numHeads === 6) image(cow2R, -width / 3, height - cow1R.height)
-  if (numHeads === 7) image(cow3R, -width / 3, height - cow1R.height)
-  if (numHeads === 8) image(cow4R, -width / 3, height - cow1R.height)
+  if (numHeads === 6) image(cow2R, vertical ? -width / 2 : -width / 2.4, height - cow1R.height)
+  if (numHeads === 7) image(cow3R, vertical ? -width / 2 : -width / 2.4, height - cow1R.height)
+  if (numHeads === 8) image(cow4R,vertical ? -width / 2 : -width / 2.4, height - cow1R.height)
   pop()
 
   
