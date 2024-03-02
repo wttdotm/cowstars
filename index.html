@@ -57,7 +57,7 @@ function setup() {
   }
   
   cnv = createCanvas(window.innerWidth, window.innerHeight);
-  rectButton = new betterButton(width/2, height / 2,140, 30, 40)
+  rectButton = new betterButton(width/2, height / 2 + 50,140, 30, 40)
 	
 	for (var i = 0; i < initialStarFactor; i++) {
         if (i % 2 === 0) {
@@ -93,7 +93,7 @@ function draw() {
   background(16,24,40);
   fill("white")
   textSize(20)
-  text(`Two-Headed Calf\nBy Laura Gilpin\n\nTomorrow when the farm boys find this\nfreak of nature, they will wrap his body\nin newspaper and carry him to the museum.\n\nBut tonight he is alive and in the north\nfield with his mother. It is a perfect\nsummer evening: the moon rising over\nthe orchard, the wind in the grass. And\nas he stares into the sky, there are\ntwice as many stars as usual.`, width / 2, height /2-250, width * 0.8, 400)
+  text(`Two-Headed Calf\nBy Laura Gilpin\n\nTomorrow when the farm boys find this\nfreak of nature, they will wrap his body\nin newspaper and carry him to the museum.\n\nBut tonight he is alive and in the north\nfield with his mother. It is a perfect\nsummer evening: the moon rising over\nthe orchard, the wind in the grass. And\nas he stares into the sky, there are\ntwice as many stars as usual.`, width / 2, height /2-180, width * 0.8, 400)
   
 	// let rectangle4Me = rect(300,300,300,300)
     // rectangle4Me.mousePressed(() => {console.log("hi")})
