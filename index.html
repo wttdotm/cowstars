@@ -25,6 +25,7 @@ let cow4
 let initialStarFactor = 40
 let cnv
 let mouseIsPressed = false
+let buttonShrink = 5
 
 function preload() {
   // font = loadFont('assets/CodyStarFont.ttf');
@@ -95,7 +96,7 @@ function draw() {
   background(16,24,40);
   fill("white")
   textSize(isVertical ? 30 : 20)
-  text(`Two-Headed Calf, By Laura Gilpin\n\nTomorrow when the farm boys find this\nfreak of nature, they will wrap his body\nin newspaper and carry him to the museum.\n\nBut tonight he is alive and in the north\nfield with his mother. It is a perfect\nsummer evening: the moon rising over\nthe orchard, the wind in the grass. And\nas he stares into the sky, there are\ntwice as many stars as usual.`, width / 2, isVertical ? height / 2 - 300 : height /2-200, width * 0.9, isVertical ? 600 : 400)
+  text(`Two-Headed Calf, By Laura Gilpin\n\nTomorrow when the farm boys find this\nfreak of nature, they will wrap his body\nin newspaper and carry him to the museum.\n\nBut tonight he is alive and in the north\nfield with his mother. It is a perfect\nsummer evening: the moon rising over\nthe orchard, the wind in the grass. And\nas he stares into the sky, there are\ntwice as many stars as usual.`, width / 2, isVertical ? height / 2 - 350 : height /2-200, width * 0.9, isVertical ? 600 : 400)
   
 	// let rectangle4Me = rect(300,300,300,300)
     // rectangle4Me.mousePressed(() => {console.log("hi")})
@@ -160,10 +161,13 @@ class betterButton {
   }
   
   draw() {
+    if (buttonShrink < 0) buttonShrink = 0
+
     push()
     fill(mouseIsPressed ? "lightgray" : "white")
-    rect(this.x, this.y, this.w, this.h, 30)
+    rect(this.x, this.y, this.w + buttonShrink--, this.h + buttonShink--, 30)
     pop()
+    if (buttonShrink < 0) buttonShrink = 0
   }
   
   
@@ -309,7 +313,9 @@ function Blade(segments) {
 
 document.addEventListener("click", (event) => {
   console.log("clicked at", event.clientX, event.clientY)
-  if (event.clientX > rectButton.x - (rectButton.w / 2) && event.clientX < rectButton.x + (rectButton.w / 2) && event.clientY > rectButton.y - (rectButton.h / 2) && event.clientY < rectButton.y + (rectButton.h / 2)) rectButton.clicked()
+  if (event.clientX > rectButton.x - (rectButton.w / 2) && event.clientX < rectButton.x + (rectButton.w / 2) && event.clientY > rectButton.y - (rectButton.h / 2) && event.clientY < rectButton.y + (rectButton.h / 2)) {
+    buttonShrink = 5
+    rectButton.clicked()}
 });
 
 
