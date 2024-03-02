@@ -22,6 +22,7 @@ let cow2
 let cow3
 let cow4
 let initialStarFactor = 40
+let cnv
 
 function preload() {
   // font = loadFont('assets/CodyStarFont.ttf');
@@ -54,7 +55,7 @@ function setup() {
     starImage = loadImage(imageURL)
   }
   
-  let cnv = createCanvas(window.innerWidth, window.innerHeight);
+  cnv = createCanvas(window.innerWidth, window.innerHeight);
   rectButton = new betterButton(width/2, height / 2,140,30, 40)
 	
 	for (var i = 0; i < initialStarFactor; i++) {
