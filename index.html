@@ -311,7 +311,7 @@ function Blade(segments) {
   }
 }
 
-document.addEventListener("mouseDown", (event) => {
+document.addEventListener("mousedown", (event) => {
   console.log("clicked at", event.clientX, event.clientY)
   if (event.clientX > rectButton.x - (rectButton.w / 2) && event.clientX < rectButton.x + (rectButton.w / 2) && event.clientY > rectButton.y - (rectButton.h / 2) && event.clientY < rectButton.y + (rectButton.h / 2)) {
     buttonShrink = 5
