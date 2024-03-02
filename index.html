@@ -57,7 +57,7 @@ function setup() {
   }
   
   cnv = createCanvas(window.innerWidth, window.innerHeight);
-  rectButton = new betterButton(width/2, height / 2,140, 30, 40)
+  rectButton = new betterButton(width/2, height / 2 + 30,140, 30, 40)
 	
 	for (var i = 0; i < initialStarFactor; i++) {
         if (i % 2 === 0) {
@@ -107,7 +107,7 @@ function draw() {
   noStroke()
   rectButton.draw()
   fill(16, 24, 40)
-  text(numHeads < 8 ? "More Stars" : "Reset", width/2, height / 2)
+  text(numHeads < 8 ? "More Stars" : "Reset", width/2, height / 2 + 30)
   pop()
   
     if (numHeads === 1) image(cow1, width - 400, height - cow1.height)
@@ -116,11 +116,11 @@ function draw() {
   if (numHeads >= 4) image(cow4, width - 400, height - cow4.height)
   push()
   scale(-1,1)
-  if (numHeads === 5) image(cow1R, -width / 2, height - cow1R.height)
+  if (numHeads === 5) image(cow1R, -width / 3, height - cow1R.height)
 
-  if (numHeads === 6) image(cow2R, -width / 2, height - cow1R.height)
-  if (numHeads === 7) image(cow3R, -width / 2, height - cow1R.height)
-  if (numHeads === 8) image(cow4R, -width / 2, height - cow1R.height)
+  if (numHeads === 6) image(cow2R, -width / 3, height - cow1R.height)
+  if (numHeads === 7) image(cow3R, -width / 3, height - cow1R.height)
+  if (numHeads === 8) image(cow4R, -width / 3, height - cow1R.height)
   pop()
 
   
