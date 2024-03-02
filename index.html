@@ -165,7 +165,7 @@ class betterButton {
 
     push()
     fill(mouseIsPressed ? "lightgray" : "white")
-    rect(this.x, this.y, this.w + buttonShrink--, this.h + buttonShink--, 30)
+    rect(this.x, this.y, this.w + buttonShrink--, this.h + buttonShrink--, 30)
     pop()
     if (buttonShrink < 0) buttonShrink = 0
   }
