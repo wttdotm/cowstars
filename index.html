@@ -54,7 +54,7 @@ function setup() {
     starImage = loadImage(imageURL)
   }
   
-  let cnv = createCanvas(1000, 1000);
+  let cnv = createCanvas(window.innerWidth, window.innerHeight);
   rectButton = new betterButton(width/2, height / 2,140,30, 40)
 	
 	for (var i = 0; i < initialStarFactor; i++) {
