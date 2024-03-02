@@ -2,7 +2,312 @@
 <html>
   <head>
     <script src="https://cdn.jsdelivr.net/npm/p5@1.9.0/lib/p5.js"></script>
+    <script>
+
+
+var stars = [];
+let pointCache = []
+let fontSize = 80;
+let textContent;
+let bounds;
+let clicked = false
+let starImage
+let getImage
+let rectButton 
+let grass = []
+let grassColour
+let numHeads = 1
+let cow1
+let cow2
+let cow3
+let cow4
+let initialStarFactor = 40
+let cnv
+
+function preload() {
+  // font = loadFont('assets/CodyStarFont.ttf');
+  cow1 = loadImage('assets/OneHeadCow.png')
+  cow2 = loadImage('assets/TwoHeadCow.png')
+  cow3 = loadImage('assets/ThreeHeadCow.png')
+  cow4 = loadImage('assets/FourHeadCow.png')
+  cow1R = loadImage('assets/OneHeadCow.png')
+  cow2R = loadImage('assets/TwoHeadCow.png')
+  cow3R = loadImage('assets/ThreeHeadCow.png')
+  cow4R = loadImage('assets/FourHeadCow.png')
+}
+function setup() {
+  cow1.resize(cow1.width / 2,cow1.height / 2)
+  cow2.resize(cow2.width / 2,cow2.height / 2)
+  cow3.resize(cow3.width / 2,cow3.height / 2)
+  cow4.resize(cow4.width / 2,cow4.height / 2)
+  push()
+  scale(-1,1)
+  cow1R.resize(cow1R.width / 2,cow1R.height / 2)
+  cow2R.resize(cow2R.width / 2,cow2R.height / 2)
+  cow3R.resize(cow3R.width / 2,cow3R.height / 2)
+  cow4R.resize(cow4R.width / 2,cow4R.height / 2)
+  pop()
+  
+
+  getImage = (imageURL) => {
+    console.log("in getImage")
+    console.log(imageURL)
+    starImage = loadImage(imageURL)
+  }
+  
+  cnv = createCanvas(window.innerWidth, window.innerHeight);
+  rectButton = new betterButton(width/2, height / 2,140,30, 40)
+	
+	for (var i = 0; i < initialStarFactor; i++) {
+        if (i % 2 === 0) {
+          stars[i] = new Star()
+        } else {
+          stars[i] = new newStar()
+        }
+	}
+  
+ 
+
+  
+  cnv.mouseClicked(() => {
+    console.log("in mosue cliucked", mouseX, mouseY)
+    console.log(rectButton.x - (rectButton.w / 2))
+    console.log(rectButton.x + (rectButton.w / 2))
+    if (mouseX > rectButton.x - (rectButton.w / 2) && mouseX < rectButton.x + (rectButton.w / 2) && mouseY > rectButton.y - (rectButton.h / 2) && mouseY < rectButton.y + (rectButton.h / 2)) rectButton.clicked()
+  })
+  
+  rectMode(CENTER)
+  angleMode(RADIANS)
+  textSize(32);
+  textAlign(CENTER, CENTER);
+ 
+  grassColour = color("green")
+  for (var i = 0; i <= width; i+=5) {
+    grass.push(new Grass(createVector(i + random(-150, 150), height+20 + random(-20, 20))));
+  }
+}
+
+function draw() {
+
+  background(16,24,40);
+  fill("white")
+  textSize(20)
+  text(`Tomorrow when the farm boys find this\nfreak of nature, they will wrap his body\nin newspaper and carry him to the museum.\n\nBut tonight he is alive and in the north\nfield with his mother. It is a perfect\nsummer evening: the moon rising over\nthe orchard, the wind in the grass. And\nas he stares into the sky, there are\ntwice as many stars as usual.`, width / 2, height /2-200, 400, 400)
+  
+	// let rectangle4Me = rect(300,300,300,300)
+    // rectangle4Me.mousePressed(() => {console.log("hi")})
+	for (var i = 0; i < stars.length; i++) {
+        if (clicked) stars[i].y = stars[i].y - 1
+        if (stars[i].y < 0) stars[i].y = height
+		stars[i].draw();
+	}
+  
+
+  rectButton.draw()
+  fill(16, 24, 40)
+  text(numHeads < 8 ? "More Stars" : "Reset", width/2, height / 2)
+  
+    if (numHeads === 1) image(cow1, width - 400, height - cow1.height)
+  if (numHeads === 2) image(cow2, width - 400, height - cow2.height)
+  if (numHeads === 3) image(cow3, width - 400, height - cow3.height)
+  if (numHeads >= 4) image(cow4, width - 400, height - cow4.height)
+  push()
+  scale(-1,1)
+  if (numHeads === 5) image(cow1R, -width / 2, height - cow1R.height)
+
+  if (numHeads === 6) image(cow2R, -width / 2, height - cow1R.height)
+  if (numHeads === 7) image(cow3R, -width / 2, height - cow1R.height)
+  if (numHeads === 8) image(cow4R, -width / 2, height - cow1R.height)
+  pop()
+
+  
+  stroke(grassColour, random(50, 200))
+  for (var i = 0; i < grass.length; i++) {
+    var g = grass[i];
+    g.draw();
+  }
+  
+  if (stars.length !== initialStarFactor * (2**numHeads)) {
+    for (var i = stars.length; i < initialStarFactor * (2**numHeads); i++) {
+        if (i % 2 === 0) {
+          stars[i] = new Star()
+        } else {
+          stars[i] = new newStar()
+        }
+	}
+  }
+  
+    if (numHeads > 8) {
+    numHeads = 1
+    stars = stars.slice(0,initialStarFactor-1)
+                     }
+}
+
+
+
+class betterButton {
+  constructor(x, y, w, h) {
+    this.x = x
+    this.y = y
+    this.w = w
+    this.h = h
+  }
+  
+  draw() {
+    rect(this.x, this.y, this.w, this.h, 30)
+  }
+  
+  
+  clicked() {
+    console.log("clicked!")
+    numHeads++
+  }
+}
+
+// star class //
+class Star {
+	constructor(x = false, y = false, size = false) {
+		this.x = x || random(width);
+		this.y = y || random(height);
+		this.size = size || random(0.25, 3);
+		this.t = random(TAU);
+	}
+	
+	draw() {
+		this.t += 0.1;
+		var scale = this.size + sin(this.t) * 2;
+		noStroke();
+		ellipse(this.x, this.y, scale, scale);
+	}
+}
+
+class newStar {
+	constructor(x = false, y = false, size = false) {
+      this.x = x || random(width);
+      this.y = y || random(height);
+      this.size = size || random(0.25, 3);
+      this.t = random(TAU);
+      this.timeCounter = Math.floor(random(0,10))
+      this.timeDelay = 15
+      this.stage = Math.floor(random(0,3))
+	}
+	
+	draw() {
+
+      // push()
+        if (this.stage === 0) {
+          fill("white")
+          noStroke()
+          rect(this.x,this.y,4,4)
+          this.timeCounter++
+          if (this.timeCounter > this.timeDelay) {
+            this.stage = 1
+            this.timeCounter = 0
+          }          
+        } else if (this.stage === 1) {
+          // fill("white")
+          // push()
+          rect(this.x,this.y, 1, 10)
+          rect(this.x,this.y, 10, 1)
+          // rect(this.x-5,this.y + 5, 1, 1)
+          // rect(this.x-5,this.y - 5, 1, 1)
+          // point(this.x+5,this.y + 5)
+          // point(this.x+5,this.y - 5)
+          // point(this.x-5,this.y + 5)
+          // point(this.x-5,this.y - 5)
+          stroke('white');
+          strokeWeight(3)
+          this.timeCounter++
+          if (this.timeCounter > this.timeDelay) {
+            this.stage = 2
+            this.timeCounter = 0
+          }
+          // pop()
+        } else if (this.stage === 2) {
+          // fill("white")
+          // push()
+          rect(this.x+5,this.y + 5, 1, 1)
+          rect(this.x+5,this.y - 5, 1, 1)
+          rect(this.x-5,this.y + 5, 1, 1)
+          rect(this.x-5,this.y - 5, 1, 1)
+          // point(this.x+5,this.y + 5)
+          // point(this.x+5,this.y - 5)
+          // point(this.x-5,this.y + 5)
+          // point(this.x-5,this.y - 5)
+          stroke('white');
+          strokeWeight(3)
+          this.timeCounter++
+          if (this.timeCounter > this.timeDelay) {
+            this.stage = 0
+            this.timeCounter = 0
+          }
+          // pop()
+        }
+		// this.t += 0.1;
+		// var scale = this.size + sin(this.t) * 2;
+		// noStroke();
+		// ellipse(this.x, this.y, scale, scale);
+      // pop()
+	}
+}
+
+
+//stole this code from here: https://editor.p5js.org/remarkability/sketches/xZtmhwi5r
+function Grass(loc) {
+  this. blades = [ ];
+  this.am =int(random(4, 12));
     
+  this.loc = loc;
+  this.loc.x = this.loc.x + random(-100, 100)
+    
+  for (var i = 0; i < this.am; i++) {
+      this.blades.push(new Blade(random(10, 50)));
+  }
+  
+  Grass.prototype.draw = function() {
+    for (var i = 0; i < this.blades.length; i++) {
+      var blade = this.blades[i];
+      push();
+      translate(this.loc.x, this.loc.y);
+      rotate(radians(blade.angle));
+      blade.branch(blade.segments);
+      pop();
+    }
+  }
+}
+
+function Blade(segments) {
+  var num = 0;
+  this.segments = segments;
+  this.angle = random(-10, 10);
+
+  this.branch = function(len) {
+    var len = len *0.79;
+    
+    strokeWeight(map(len, 1, this.segments, 0.1, 3));
+    line(0, 0, 0, -len);
+    push();
+    translate(0, -len);
+    if (len > 5) {
+      rotate(radians(this.angle  + sin(len+num) ));
+      this.branch(len) 
+    }
+    pop();
+    /* Movement effectivle works on the computer, not on the web. */
+    num+=0.01;
+  }
+}
+
+document.addEventListener("click", (event) => {
+  console.log("clicked at", event.clientX, event.clientY)
+  if (event.clientX > rectButton.x - (rectButton.w / 2) && event.clientX < rectButton.x + (rectButton.w / 2) && event.clientY > rectButton.y - (rectButton.h / 2) && event.clientY < rectButton.y + (rectButton.h / 2)) rectButton.clicked()
+});
+
+
+
+  // console.log(cnv.mouseClicked)
+  // console.log("hiiiii")
+    </script>
     <style>
       html, body { 
         margin: 0;
@@ -20,306 +325,6 @@
     </style>
   </head>
 <body>
-  <script>
-window.addEventListener('load', function() {
-  // Your setup and draw functions here
 
-
-    var stars = [];
-    let pointCache = []
-    let fontSize = 80;
-    let textContent;
-    let bounds;
-    let clicked = false
-    let starImage
-    let getImage
-    let rectButton 
-    let grass = []
-    let grassColour
-    let numHeads = 1
-    let cow1
-    let cow2
-    let cow3
-    let cow4
-    let initialStarFactor = 40
-    let cnv
-    
-    function preload() {
-      // font = loadFont('assets/CodyStarFont.ttf');
-      cow1 = loadImage('assets/OneHeadCow.png')
-      cow2 = loadImage('assets/TwoHeadCow.png')
-      cow3 = loadImage('assets/ThreeHeadCow.png')
-      cow4 = loadImage('assets/FourHeadCow.png')
-      cow1R = loadImage('assets/OneHeadCow.png')
-      cow2R = loadImage('assets/TwoHeadCow.png')
-      cow3R = loadImage('assets/ThreeHeadCow.png')
-      cow4R = loadImage('assets/FourHeadCow.png')
-    }
-    function setup() {
-      cow1.resize(cow1.width / 2,cow1.height / 2)
-      cow2.resize(cow2.width / 2,cow2.height / 2)
-      cow3.resize(cow3.width / 2,cow3.height / 2)
-      cow4.resize(cow4.width / 2,cow4.height / 2)
-      push()
-      scale(-1,1)
-      cow1R.resize(cow1R.width / 2,cow1R.height / 2)
-      cow2R.resize(cow2R.width / 2,cow2R.height / 2)
-      cow3R.resize(cow3R.width / 2,cow3R.height / 2)
-      cow4R.resize(cow4R.width / 2,cow4R.height / 2)
-      pop()
-      
-    
-      getImage = (imageURL) => {
-        console.log("in getImage")
-        console.log(imageURL)
-        starImage = loadImage(imageURL)
-      }
-      
-      cnv = createCanvas(window.innerWidth, window.innerHeight);
-      rectButton = new betterButton(width/2, height / 2,140,30, 40)
-      
-      for (var i = 0; i < initialStarFactor; i++) {
-            if (i % 2 === 0) {
-              stars[i] = new Star()
-            } else {
-              stars[i] = new newStar()
-            }
-      }
-      
-     
-    
-      
-      cnv.mouseClicked(() => {
-        console.log("in mosue cliucked", mouseX, mouseY)
-        console.log(rectButton.x - (rectButton.w / 2))
-        console.log(rectButton.x + (rectButton.w / 2))
-        if (mouseX > rectButton.x - (rectButton.w / 2) && mouseX < rectButton.x + (rectButton.w / 2) && mouseY > rectButton.y - (rectButton.h / 2) && mouseY < rectButton.y + (rectButton.h / 2)) rectButton.clicked()
-      })
-      
-      rectMode(CENTER)
-      angleMode(RADIANS)
-      textSize(32);
-      textAlign(CENTER, CENTER);
-     
-      grassColour = color("green")
-      for (var i = 0; i <= width; i+=5) {
-        grass.push(new Grass(createVector(i + random(-150, 150), height+20 + random(-20, 20))));
-      }
-    }
-    
-    function draw() {
-    
-      background(16,24,40);
-      fill("white")
-      textSize(20)
-      text(`Tomorrow when the farm boys find this\nfreak of nature, they will wrap his body\nin newspaper and carry him to the museum.\n\nBut tonight he is alive and in the north\nfield with his mother. It is a perfect\nsummer evening: the moon rising over\nthe orchard, the wind in the grass. And\nas he stares into the sky, there are\ntwice as many stars as usual.`, width / 2, height /2-200, 400, 400)
-      
-      // let rectangle4Me = rect(300,300,300,300)
-        // rectangle4Me.mousePressed(() => {console.log("hi")})
-      for (var i = 0; i < stars.length; i++) {
-            if (clicked) stars[i].y = stars[i].y - 1
-            if (stars[i].y < 0) stars[i].y = height
-        stars[i].draw();
-      }
-      
-    
-      rectButton.draw()
-      fill(16, 24, 40)
-      text(numHeads < 8 ? "More Stars" : "Reset", width/2, height / 2)
-      
-        if (numHeads === 1) image(cow1, width - 400, height - cow1.height)
-      if (numHeads === 2) image(cow2, width - 400, height - cow2.height)
-      if (numHeads === 3) image(cow3, width - 400, height - cow3.height)
-      if (numHeads >= 4) image(cow4, width - 400, height - cow4.height)
-      push()
-      scale(-1,1)
-      if (numHeads === 5) image(cow1R, -width / 2, height - cow1R.height)
-    
-      if (numHeads === 6) image(cow2R, -width / 2, height - cow1R.height)
-      if (numHeads === 7) image(cow3R, -width / 2, height - cow1R.height)
-      if (numHeads === 8) image(cow4R, -width / 2, height - cow1R.height)
-      pop()
-    
-      
-      stroke(grassColour, random(50, 200))
-      for (var i = 0; i < grass.length; i++) {
-        var g = grass[i];
-        g.draw();
-      }
-      
-      if (stars.length !== initialStarFactor * (2**numHeads)) {
-        for (var i = stars.length; i < initialStarFactor * (2**numHeads); i++) {
-            if (i % 2 === 0) {
-              stars[i] = new Star()
-            } else {
-              stars[i] = new newStar()
-            }
-      }
-      }
-      
-        if (numHeads > 8) {
-        numHeads = 1
-        stars = stars.slice(0,initialStarFactor-1)
-                         }
-    }
-    
-    
-    
-    class betterButton {
-      constructor(x, y, w, h) {
-        this.x = x
-        this.y = y
-        this.w = w
-        this.h = h
-      }
-      
-      draw() {
-        rect(this.x, this.y, this.w, this.h, 30)
-      }
-      
-      
-      clicked() {
-        console.log("clicked!")
-        numHeads++
-      }
-    }
-    
-    // star class //
-    class Star {
-      constructor(x = false, y = false, size = false) {
-        this.x = x || random(width);
-        this.y = y || random(height);
-        this.size = size || random(0.25, 3);
-        this.t = random(TAU);
-      }
-      
-      draw() {
-        this.t += 0.1;
-        var scale = this.size + sin(this.t) * 2;
-        noStroke();
-        ellipse(this.x, this.y, scale, scale);
-      }
-    }
-    
-    class newStar {
-      constructor(x = false, y = false, size = false) {
-          this.x = x || random(width);
-          this.y = y || random(height);
-          this.size = size || random(0.25, 3);
-          this.t = random(TAU);
-          this.timeCounter = Math.floor(random(0,10))
-          this.timeDelay = 15
-          this.stage = Math.floor(random(0,3))
-      }
-      
-      draw() {
-    
-          // push()
-            if (this.stage === 0) {
-              fill("white")
-              noStroke()
-              rect(this.x,this.y,4,4)
-              this.timeCounter++
-              if (this.timeCounter > this.timeDelay) {
-                this.stage = 1
-                this.timeCounter = 0
-              }          
-            } else if (this.stage === 1) {
-              // fill("white")
-              // push()
-              rect(this.x,this.y, 1, 10)
-              rect(this.x,this.y, 10, 1)
-              // rect(this.x-5,this.y + 5, 1, 1)
-              // rect(this.x-5,this.y - 5, 1, 1)
-              // point(this.x+5,this.y + 5)
-              // point(this.x+5,this.y - 5)
-              // point(this.x-5,this.y + 5)
-              // point(this.x-5,this.y - 5)
-              stroke('white');
-              strokeWeight(3)
-              this.timeCounter++
-              if (this.timeCounter > this.timeDelay) {
-                this.stage = 2
-                this.timeCounter = 0
-              }
-              // pop()
-            } else if (this.stage === 2) {
-              // fill("white")
-              // push()
-              rect(this.x+5,this.y + 5, 1, 1)
-              rect(this.x+5,this.y - 5, 1, 1)
-              rect(this.x-5,this.y + 5, 1, 1)
-              rect(this.x-5,this.y - 5, 1, 1)
-              // point(this.x+5,this.y + 5)
-              // point(this.x+5,this.y - 5)
-              // point(this.x-5,this.y + 5)
-              // point(this.x-5,this.y - 5)
-              stroke('white');
-              strokeWeight(3)
-              this.timeCounter++
-              if (this.timeCounter > this.timeDelay) {
-                this.stage = 0
-                this.timeCounter = 0
-              }
-              // pop()
-            }
-        // this.t += 0.1;
-        // var scale = this.size + sin(this.t) * 2;
-        // noStroke();
-        // ellipse(this.x, this.y, scale, scale);
-          // pop()
-      }
-    }
-    
-    
-    //stole this code from here: https://editor.p5js.org/remarkability/sketches/xZtmhwi5r
-    function Grass(loc) {
-      this. blades = [ ];
-      this.am =int(random(4, 12));
-        
-      this.loc = loc;
-      this.loc.x = this.loc.x + random(-100, 100)
-        
-      for (var i = 0; i < this.am; i++) {
-          this.blades.push(new Blade(random(10, 50)));
-      }
-      
-      Grass.prototype.draw = function() {
-        for (var i = 0; i < this.blades.length; i++) {
-          var blade = this.blades[i];
-          push();
-          translate(this.loc.x, this.loc.y);
-          rotate(radians(blade.angle));
-          blade.branch(blade.segments);
-          pop();
-        }
-      }
-    }
-    
-    function Blade(segments) {
-      var num = 0;
-      this.segments = segments;
-      this.angle = random(-10, 10);
-    
-      this.branch = function(len) {
-        var len = len *0.79;
-        
-        strokeWeight(map(len, 1, this.segments, 0.1, 3));
-        line(0, 0, 0, -len);
-        push();
-        translate(0, -len);
-        if (len > 5) {
-          rotate(radians(this.angle  + sin(len+num) ));
-          this.branch(len) 
-        }
-        pop();
-        /* Movement effectivle works on the computer, not on the web. */
-        num+=0.01;
-      }
-    }
-      console.log(cnv.mouseClicked)
-      console.log("hiiiewrerewrii")
-    });
-        </script>
 </body>
 </html>
