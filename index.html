@@ -340,6 +340,43 @@ document.addEventListener("mousedown", (event) => {
     </style>
   </head>
 <body>
+  <audio controls style="display: none;">
+    <source src="assets/bgsound_fadein.mp3" type="audio/mpeg">
+  </audio>
+  <script> 
+    // Wait for the page to fully load before setting up audio
+    document.addEventListener('DOMContentLoaded', function() {
+        const audio = document.querySelector('audio');
+        let hasPlayed = false;
 
+        function playAudio() {
+            if (!hasPlayed && audio) {
+                audio.play().then(() => {
+                    console.log('Audio started playing');
+                    hasPlayed = true;
+                    removeListeners();
+                }).catch(e => {
+                    console.log('Audio play failed:', e);
+                    // Don't set hasPlayed to true if it failed, so it can try again
+                });
+            }
+        }
+
+        function removeListeners() {
+            document.removeEventListener('click', playAudio);
+            document.removeEventListener('keydown', playAudio);
+            document.removeEventListener('scroll', playAudio);
+            document.removeEventListener('mousemove', playAudio);
+            document.removeEventListener('touchstart', playAudio);
+        }
+
+        // Add event listeners for various user interactions
+        document.addEventListener('click', playAudio);
+        document.addEventListener('keydown', playAudio);
+        document.addEventListener('scroll', playAudio);
+        document.addEventListener('mousemove', playAudio);
+        document.addEventListener('touchstart', playAudio);
+    });
+  </script>
 </body>
 </html>
