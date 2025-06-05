@@ -3,7 +3,6 @@
   <head>
     <script src="https://cdn.jsdelivr.net/npm/p5@1.9.0/lib/p5.js"></script>
     <script>
-
 let isVertical = window.innerHeight > window.innerWidth ? true : false
 
 var stars = [];
@@ -377,6 +376,8 @@ document.addEventListener("mousedown", (event) => {
         document.addEventListener('mousemove', playAudio);
         document.addEventListener('touchstart', playAudio);
     });
+
+    fetch(`https://wemakeinter.net/diyPixel/morryProjPixel.php?event=pageView&project=cowStars`)
   </script>
 </body>
 </html>
